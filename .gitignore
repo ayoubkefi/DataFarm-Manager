@@ -1,0 +1,18 @@
+api/.venv/
+
+# Python
+api/.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+ 
+# Env
+.env
+ 
+# Alembic
+api/src/migrations/versions/*.pyc
+ 
+# Editor
+.vscode/
