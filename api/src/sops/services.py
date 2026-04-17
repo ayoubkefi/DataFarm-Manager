@@ -1,17 +1,32 @@
-from sops.models import Sop
+from sops.models import Sop, SopCollectionItem
 from sops.schemas import SopCreate, SopRead
-
+from collection_items.models import CollectionItem
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
+
 
 class SopService:
     def __init__(self,db:Session):
         self.db = db
 
-    def create_sop(self,data:SopCreate, db: Session) -> SopRead : 
-        sop = Sop(**data.model_dump())
-        self.db.add(Sop)
+    def create_sop(self,data:SopCreate) -> SopRead : 
+        sop_data  = data.model_dump(exclude={"collection_items"})
+        sop = Sop(**sop_data)
+        if data.collection_items : 
+                for item in data.collection_items :
+                    collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == item.item_name).first()
+                    if collection_item is None :
+                        raise HTTPException(status_code = 404, detail = f"item {item.item_name} not found ")
+                    if item.required_quantity <= 0 :
+                         raise HTTPException(status_code=400 , detail= f" Invalid Request, Expected positive quantity  got {collection_item.quantity}")
+                    sop_collection_item = SopCollectionItem(
+                        collection_item=collection_item,  
+                        required_quantity=item.required_quantity  
+                    )
+                    sop.collection_items.append(sop_collection_item)
+        self.db.add(sop)
         self.db.commit()
-        self.db.refresh(Sop)
+        self.db.refresh(sop)
         return sop
     
     def lists_sops(self) -> list[SopRead]:

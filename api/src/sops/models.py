@@ -7,7 +7,7 @@ from collection_items.models import CollectionItem
 from db.base import Base
 from db.db_mixin import TimestampMixin, UUIDMixin
 
-from robots.models import RobotType
+from core.enums import RobotType
 
 
 

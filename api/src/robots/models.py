@@ -4,13 +4,7 @@ from sqlalchemy import String, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from db.base import Base
 from db.db_mixin import TimestampMixin, UUIDMixin
-
-
-class RobotType(str, enum.Enum):
-    THOR_SINGLE_ARM = "thor_single_arm"
-    THOR_DUAL_ARM = "thor_dual_arm"
-    FRANKA_SINGLE_ARM = "franka_single_arm"
-    FRANKA_DUAL_ARM = "franka_dual_arm"
+from core.enums import RobotType
 
 
 class Robot(Base, UUIDMixin, TimestampMixin):

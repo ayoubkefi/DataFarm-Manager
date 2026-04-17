@@ -1,18 +1,26 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from uuid import UUID
 from datetime import datetime
 
+class SopInCollectionItem(BaseModel):
+    id : UUID
+    name : str
+    is_active : bool  
+    model_config = ConfigDict(from_attributes=True)
 
 
-class SopCollectionItemRead(BaseModel):
-    sop_id : UUID
-    required_quantity: int 
-    class config :
-            from_attributes = True 
 class CollectionItemCreate(BaseModel):
     name : str 
     description : str | None 
     quantity : int | None = None
+
+
+class SopCollectionItemRead(BaseModel):
+    
+    sop :  SopInCollectionItem
+    required_quantity: int 
+    model_config = ConfigDict(from_attributes=True)
+    
 
 class CollectionItemRead(BaseModel):
     id : UUID
@@ -23,5 +31,4 @@ class CollectionItemRead(BaseModel):
     updated_at : datetime
     sops : list["SopCollectionItemRead"] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

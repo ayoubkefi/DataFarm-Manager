@@ -1,19 +1,21 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from uuid import UUID
 from datetime import datetime
 from robots.models import RobotType
-from collection_items import CollectionItem
+
+
+class CollectionItemInSop(BaseModel):
+    id: UUID
+    name: str
+    description: str | None = None
+    quantity: int | None = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 class SopCollectionItemCreate(BaseModel):
-    collection_item_id: UUID
+    item_name: str
     required_quantity: int = Field(gt=0)
 
-class SopCollectionItemRead(BaseModel):
-    collection_item_id: UUID
-    required_quantity: int
-
-    class Config:
-        from_attributes = True
 
 class SopCreate(BaseModel):
     name: str
@@ -23,6 +25,13 @@ class SopCreate(BaseModel):
     collection_items: list[SopCollectionItemCreate] = []
 
 
+class SopCollectionItemRead(BaseModel):
+    collection_item : CollectionItemInSop
+    required_quantity: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+    
 class SopRead(BaseModel):
     id: UUID
     name: str
@@ -33,5 +42,4 @@ class SopRead(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

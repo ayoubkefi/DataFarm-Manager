@@ -1,4 +1,4 @@
 from .routers import router
 from .models import Robot
-
-__all__ = ["router","Robot"]
+from .schemas import RobotRead
+__all__ = ["router","Robot","RobotRead"]
