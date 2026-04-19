@@ -19,7 +19,9 @@ class CollectionItemService :
         collection_items = self.db.query(CollectionItem).all()
         return collection_items
     
-    def get_collectionItem(self,item_name : str ) -> CollectionItemRead :
-        collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == item_name)  
+    def get_collectionItem(self, item_name: str) -> CollectionItemRead:
+        collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == item_name).first()
+        if collection_item is None:
+            raise HTTPException(status_code=404, detail=f"Collection item '{item_name}' not found")
         return collection_item
     

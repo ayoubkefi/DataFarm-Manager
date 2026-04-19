@@ -17,7 +17,7 @@ def list_collection_items(db:Session = Depends(get_db)):
     service = CollectionItemService(db)
     return service.list_collectionItems()
 
-@router.get("/{collection_item_name}",response_model=CollectionItemRead)
-def get_collection_item(item_name : str, db:Session = Depends(get_db)):
+@router.get("/{collection_item_name}", response_model=CollectionItemRead)
+def get_collection_item(collection_item_name: str, db: Session = Depends(get_db)):
     service = CollectionItemService(db)
-    return service.get_collectionItem(item_name)
+    return service.get_collectionItem(collection_item_name)

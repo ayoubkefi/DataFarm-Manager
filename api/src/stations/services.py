@@ -20,5 +20,5 @@ class StationService :
         return stations 
     
     def get_station(self,station_name : str) -> StationRead :
-        station = self.db.query(Station).filter(Station.name == station_name) 
+        station = self.db.query(Station).filter(Station.name == station_name).first()
         return station 

@@ -12,6 +12,8 @@ class StationCreate(BaseModel):
     is_active: bool = True
     robot_name: str | None = None
 
+
+
 class RobotInStation(BaseModel):
     id : UUID
     name : str 

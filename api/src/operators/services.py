@@ -19,6 +19,7 @@ class OperatorService:
         return operators 
     
     def get_operator(self,operator_number :int ) -> OperatorRead :
-        operator = self.db.query(Operator).filter(Operator.operator_number == operator_number)
+        operator = self.db.query(Operator).filter(Operator.operator_number == operator_number).first()
         if not operator : 
             raise HTTPException(status_code=404, detail = "Operator not found ")
+        return operator

@@ -19,3 +19,8 @@ def create_sop(data: SopCreate, db: Session = Depends(get_db)):
 def list_sops(db: Session = Depends(get_db)):
     service = SopService(db)
     return service.lists_sops()
+
+@router.get("/{sop_name}", response_model = SopRead)
+def get_sop(sop_name:str, db:  Session = Depends(get_db)):
+    service = SopService(db)
+    return service.get_sop(sop_name)

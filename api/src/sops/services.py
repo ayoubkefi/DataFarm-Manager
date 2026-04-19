@@ -34,6 +34,6 @@ class SopService:
         return sops 
     
     def get_sop(self,sop_name:str) -> SopRead :
-        sop = self.db.query(Sop).filter(Sop.name == sop_name)
+        sop = self.db.query(Sop).filter(Sop.name == sop_name).first()
         return sop
     
