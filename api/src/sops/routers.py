@@ -28,10 +28,10 @@ def get_sop(sop_name:str, db:  Session = Depends(get_db)):
 @router.patch("/{sop_name}", response_model = SopRead)
 def update_station(sop_name : str, data: SopUpdate, db: Session = Depends(get_db)):
     service =  SopService(db)
-    return service.update_station(sop_name,data)
+    return service.update_sop(sop_name,data)
 
 
 @router.delete("/{sop_name}", status_code=204)
 def delete_sation(sop_name : str, db: Session = Depends(get_db)):
     service = SopService(db)
-    return service.delete_station(sop_name)
+    return service.delete_sop(sop_name)

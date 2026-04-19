@@ -37,9 +37,9 @@ class SopService:
         sop = self.db.query(Sop).filter(Sop.name == sop_name).first()
         return sop
     
-    def update_collectionItem(self, sop_name : str, data: SopUpdate) -> SopRead : 
+    def update_sop(self, sop_name : str, data: SopUpdate) -> SopRead : 
         update_data = data.model_dump(exclude_unset = True)
-        sop = self.get_collectionItem(sop_name)
+        sop = self.get_sop(sop_name)
         for field, value in update_data.items():
             setattr(sop,field,value)
         self.db.commit()
@@ -47,7 +47,7 @@ class SopService:
         return sop 
     
 
-    def delete_collectionItem(self,sop_name : str) -> None : 
-        collectionItem = self.get_collectionItem(sop_name)
-        self.db.delete(collectionItem)
+    def delete_sop(self,sop_name : str) -> None : 
+        sop = self.get_sop(sop_name)
+        self.db.delete(sop)
         self.db.commit()
