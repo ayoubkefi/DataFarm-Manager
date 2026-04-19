@@ -35,6 +35,8 @@ class SopService:
     
     def get_sop(self,sop_name:str) -> SopRead :
         sop = self.db.query(Sop).filter(Sop.name == sop_name).first()
+        if not sop:
+            raise HTTPException(status_code=404, detail=f"SOP '{sop_name}' not found")
         return sop
     
     def update_sop(self, sop_name : str, data: SopUpdate) -> SopRead : 
