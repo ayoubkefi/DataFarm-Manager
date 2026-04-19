@@ -33,6 +33,9 @@ class StationService :
     
     def get_station(self,station_name : str) -> StationRead :
         station = self.db.query(Station).filter(Station.name == station_name).first()
+        if not station:
+            raise HTTPException(status_code=404, detail=f"Station '{station_name}' not found")
+
         return station 
     
     def update_station(self, station_name : str, data: StationUpdate) -> StationRead : 
