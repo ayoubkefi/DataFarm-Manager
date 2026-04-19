@@ -42,6 +42,17 @@ class RobotService:
         robot = self.get_robot(robot_name)
         for field, value in update_data.items():
             setattr(robot,field,value)
+        if "station_name"  in data.model_fields_set : 
+            if data.station_name is None :
+                robot.station = None 
+            else :
+                station = self.db.query(Station).filter(Station.name == data.station_name).first()
+                if not station : 
+                    raise HTTPException(status_code=404, detail="Station not found ")
+                if station.robot is not None and station.robot.name != robot_name : 
+                    raise HTTPException(status_code=400, detail ="Station already assigned to another robot ")
+                robot.station = station
+
         self.db.commit()
         self.db.refresh(robot)
         return robot 
