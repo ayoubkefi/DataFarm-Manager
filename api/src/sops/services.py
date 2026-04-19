@@ -44,6 +44,21 @@ class SopService:
         sop = self.get_sop(sop_name)
         for field, value in update_data.items():
             setattr(sop,field,value)
+        if "collection_items" in data.model_fields_set : 
+            if data.collection_items is None :
+                sop.collection_items = None
+            else : 
+                sop.collection_items.clear()
+                for item in data.collection_items : 
+                    collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == item.item_name).first()
+                    if collection_item is None :
+                        raise HTTPException(status_code=404, detail=f"item {item.item_name} not found ")
+                    sop.collection_items.append(
+                        SopCollectionItem(
+                            collection_item = collection_item,
+                            required_quantity = item.required_quantity
+                        )
+                    )
         self.db.commit()
         self.db.refresh(sop)
         return sop 
