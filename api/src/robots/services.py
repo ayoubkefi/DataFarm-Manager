@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from robots.models import Robot
-from robots.schemas import RobotCreate, RobotRead
+from robots.schemas import RobotCreate, RobotRead, RobotUpdate
 from fastapi import HTTPException
 
 from stations.models import Station
@@ -36,3 +36,17 @@ class RobotService:
         if not robot:
             raise HTTPException(status_code=404, detail="Robot not found")
         return robot
+    
+    def update_robot(self,robot_name: str, data: RobotUpdate ) -> RobotUpdate :
+        update_data = data.model_dump(exclude_unset = True)
+        robot = self.get_robot(robot_name)
+        for field, value in update_data.items():
+            setattr(robot,field,value)
+        self.db.commit()
+        self.db.refresh(robot)
+        return robot 
+    
+    def delete_robot(self,robot_name: str ) -> None : 
+        robot = self.get_robot(robot_name)
+        self.db.delete(robot)
+        self.db.commit()

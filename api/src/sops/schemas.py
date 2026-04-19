@@ -25,6 +25,14 @@ class SopCreate(BaseModel):
     collection_items: list[SopCollectionItemCreate] = []
 
 
+class SopUpdate(BaseModel):
+    name: str | None = None
+    description: str | None = None
+    is_active: bool | None = None
+    robot_type: RobotType | None = None
+    collection_items: list[SopCollectionItemCreate] | None = None 
+
+
 class SopCollectionItemRead(BaseModel):
     collection_item : CollectionItemInSop
     required_quantity: int

@@ -1,5 +1,5 @@
 from sops.models import Sop, SopCollectionItem
-from sops.schemas import SopCreate, SopRead
+from sops.schemas import SopCreate, SopRead, SopUpdate
 from collection_items.models import CollectionItem
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -37,3 +37,17 @@ class SopService:
         sop = self.db.query(Sop).filter(Sop.name == sop_name).first()
         return sop
     
+    def update_collectionItem(self, sop_name : str, data: SopUpdate) -> SopRead : 
+        update_data = data.model_dump(exclude_unset = True)
+        sop = self.get_collectionItem(sop_name)
+        for field, value in update_data.items():
+            setattr(sop,field,value)
+        self.db.commit()
+        self.db.refresh(sop)
+        return sop 
+    
+
+    def delete_collectionItem(self,sop_name : str) -> None : 
+        collectionItem = self.get_collectionItem(sop_name)
+        self.db.delete(collectionItem)
+        self.db.commit()

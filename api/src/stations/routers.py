@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from db.session import get_db
 from stations.models import Station
-from stations.schemas import StationCreate, StationRead
+from stations.schemas import StationCreate, StationRead, StationUpdate
 from stations.services import StationService
 
 
@@ -26,3 +26,14 @@ def list_stations(db: Session = Depends(get_db)):
 def get_station(station_name: str, db: Session = Depends(get_db)):
     service = StationService(db)
     return service.get_station(station_name)    
+
+@router.patch("/{station_name}", response_model = StationRead)
+def update_station(station_name : str, data: StationUpdate, db: Session = Depends(get_db)):
+    service =  StationService(db)
+    return service.update_station(station_name,data)
+
+
+@router.delete("/{station_name}", status_code=204)
+def delete_sation(station_name : str, db: Session = Depends(get_db)):
+    service = StationService(db)
+    return service.delete_station(station_name)

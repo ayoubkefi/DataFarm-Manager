@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from collection_items.models import CollectionItem
-from collection_items.schemas import CollectionItemCreate, CollectionItemRead
+from collection_items.schemas import CollectionItemCreate, CollectionItemRead, CollectionItemUpdate
 from fastapi import HTTPException
 
 class CollectionItemService :
@@ -19,9 +19,23 @@ class CollectionItemService :
         collection_items = self.db.query(CollectionItem).all()
         return collection_items
     
-    def get_collectionItem(self, item_name: str) -> CollectionItemRead:
-        collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == item_name).first()
+    def get_collectionItem(self, collection_item_name: str) -> CollectionItemRead:
+        collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == collection_item_name).first()
         if collection_item is None:
-            raise HTTPException(status_code=404, detail=f"Collection item '{item_name}' not found")
+            raise HTTPException(status_code=404, detail=f"Collection item '{collection_item_name}' not found")
         return collection_item
+
+    def update_collectionItem(self, collection_item_name : str, data: CollectionItemUpdate) -> CollectionItemRead : 
+        update_data = data.model_dump(exclude_unset = True)
+        collectionItem = self.get_collectionItem(collection_item_name)
+        for field, value in update_data.items():
+            setattr(collectionItem,field,value)
+        self.db.commit()
+        self.db.refresh(collectionItem)
+        return collectionItem 
     
+
+    def delete_collectionItem(self,item_name : str) -> None : 
+        collectionItem = self.get_collectionItem(item_name)
+        self.db.delete(collectionItem)
+        self.db.commit()

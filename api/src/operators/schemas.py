@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from uuid import UUID
 from datetime import datetime
 
@@ -9,7 +9,12 @@ class OperatorCreate(BaseModel):
     operator_number: int
     is_active: bool = True
 
-
+class OperatorUpdate(BaseModel):
+    full_name: str | None = None
+    email: EmailStr | None = None
+    operator_number: int | None = None
+    is_active: bool | None = None
+    
 class OperatorRead(BaseModel):
     id: UUID
     full_name: str

@@ -1,9 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from uuid import UUID
 from datetime import datetime
 
 from core.enums import RobotType
-from robots.schemas import RobotRead
 
 
 class StationCreate(BaseModel):
@@ -12,12 +11,17 @@ class StationCreate(BaseModel):
     is_active: bool = True
     robot_name: str | None = None
 
-
+class StationUpdate(BaseModel):
+    name : str | None = None
+    description : str | None = None
+    is_active : bool | None = None
+    robot_name : str | None = None
 
 class RobotInStation(BaseModel):
     id : UUID
     name : str 
     robot_type : RobotType
+
 class StationRead(BaseModel):
     id: UUID
     name: str
@@ -27,5 +31,4 @@ class StationRead(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

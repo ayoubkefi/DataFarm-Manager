@@ -18,7 +18,11 @@ class RobotCreate(BaseModel):
     robot_type: RobotType
     station_name : str | None = None
 
- 
+class RobotUpdate(BaseModel):
+    name: str | None = None
+    robot_type: RobotType | None = None
+    station_name : str | None = None
+
 class RobotRead(BaseModel):
     id: UUID
     name: str

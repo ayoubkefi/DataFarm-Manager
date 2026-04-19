@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
 from db.session import get_db
-from sops.models import Sop
-from sops.schemas import SopCreate, SopRead
+
+from sops.schemas import SopCreate, SopRead, SopUpdate
 from sops.services  import SopService
 router = APIRouter(prefix="/sops", tags=["sops"])
 
@@ -24,3 +23,15 @@ def list_sops(db: Session = Depends(get_db)):
 def get_sop(sop_name:str, db:  Session = Depends(get_db)):
     service = SopService(db)
     return service.get_sop(sop_name)
+
+
+@router.patch("/{sop_name}", response_model = SopRead)
+def update_station(sop_name : str, data: SopUpdate, db: Session = Depends(get_db)):
+    service =  SopService(db)
+    return service.update_station(sop_name,data)
+
+
+@router.delete("/{sop_name}", status_code=204)
+def delete_sation(sop_name : str, db: Session = Depends(get_db)):
+    service = SopService(db)
+    return service.delete_station(sop_name)

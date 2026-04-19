@@ -14,6 +14,10 @@ class CollectionItemCreate(BaseModel):
     description : str | None 
     quantity : int | None = None
 
+class CollectionItemUpdate(BaseModel):
+    name : str | None = None
+    description : str | None 
+    quantity : int | None = None
 
 class SopCollectionItemRead(BaseModel):
     
