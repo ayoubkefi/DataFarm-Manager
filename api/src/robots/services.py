@@ -37,8 +37,8 @@ class RobotService:
             raise HTTPException(status_code=404, detail="Robot not found")
         return robot
     
-    def update_robot(self,robot_name: str, data: RobotUpdate ) -> RobotUpdate :
-        update_data = data.model_dump(exclude_unset = True)
+    def update_robot(self,robot_name: str, data: RobotUpdate ) -> RobotRead :
+        update_data = data.model_dump(exclude_unset = True, exclude={"station_name"})
         robot = self.get_robot(robot_name)
         for field, value in update_data.items():
             setattr(robot,field,value)

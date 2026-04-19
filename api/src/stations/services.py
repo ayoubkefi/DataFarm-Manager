@@ -39,10 +39,21 @@ class StationService :
         return station 
     
     def update_station(self, station_name : str, data: StationUpdate) -> StationRead : 
-        update_data = data.model_dump(exclude_unset = True)
+        update_data = data.model_dump(exclude_unset = True, exclude={"robot_name"})
         station = self.get_station(station_name)
         for field, value in update_data.items():
             setattr(station,field,value)
+        if "robot_name"  in data.model_fields_set : 
+            if data.robot_name is None :
+                station.robot = None 
+            else :
+                robot = self.db.query(Station).filter(Station.name == data.station_name).first()
+                if not robot : 
+                    raise HTTPException(status_code=404, detail="Station not found ")
+                if robot.station is not None and robot.station.name != station_name: 
+                    raise HTTPException(status_code=400, detail ="Robot already assigned to another station ")
+                station.robot = robot
+
         self.db.commit()
         self.db.refresh(station)
         return station 

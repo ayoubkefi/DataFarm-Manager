@@ -40,7 +40,7 @@ class SopService:
         return sop
     
     def update_sop(self, sop_name : str, data: SopUpdate) -> SopRead : 
-        update_data = data.model_dump(exclude_unset = True)
+        update_data = data.model_dump(exclude_unset = True, exclude={"collection_items"})
         sop = self.get_sop(sop_name)
         for field, value in update_data.items():
             setattr(sop,field,value)
