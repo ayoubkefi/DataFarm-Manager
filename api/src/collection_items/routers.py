@@ -26,10 +26,10 @@ def get_collection_item(collection_item_name: str, db: Session = Depends(get_db)
 @router.patch("/{collection_item_name}", response_model = CollectionItemRead)
 def update_collection_item(collection_item_name : str, data: CollectionItemUpdate, db: Session = Depends(get_db)):
     service =  CollectionItemService(db)
-    return CollectionItemService.update_collectionItem(collection_item_name,data)
+    return service.update_collectionItem(collection_item_name,data)
 
 
 @router.delete("/{collection_item_name}", status_code=204)
 def delete_sation(collection_item_name : str, db: Session = Depends(get_db)):
     service = CollectionItemService(db)
-    return CollectionItemService.delete_collectionItem(collection_item_name)
+    return service.delete_collectionItem(collection_item_name)
