@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from operators.models import Operator
 from operators.schemas import OperatorRead, OperatorCreate, OperatorUpdate
 from core.exceptions import raise_conflict, raise_not_found
-from fastapi import HTTPException
+
 
 class OperatorService:
     

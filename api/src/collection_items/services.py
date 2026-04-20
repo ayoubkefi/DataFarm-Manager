@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from collection_items.models import CollectionItem
 from collection_items.schemas import CollectionItemCreate, CollectionItemRead, CollectionItemUpdate
-from fastapi import HTTPException
+
 
 from core.exceptions import raise_not_found
 
