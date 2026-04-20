@@ -3,6 +3,8 @@ from collection_items.models import CollectionItem
 from collection_items.schemas import CollectionItemCreate, CollectionItemRead, CollectionItemUpdate
 from fastapi import HTTPException
 
+from core.exceptions import raise_not_found
+
 class CollectionItemService :
 
     def __init__(self, db:Session):
@@ -22,7 +24,7 @@ class CollectionItemService :
     def get_collectionItem(self, collection_item_name: str) -> CollectionItemRead:
         collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == collection_item_name).first()
         if collection_item is None:
-            raise HTTPException(status_code=404, detail=f"Collection item '{collection_item_name}' not found")
+            raise_not_found("Collection item",collection_item_name) 
         return collection_item
 
     def update_collectionItem(self, collection_item_name : str, data: CollectionItemUpdate) -> CollectionItemRead : 
