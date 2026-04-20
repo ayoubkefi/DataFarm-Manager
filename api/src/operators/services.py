@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session 
 from operators.models import Operator
 from operators.schemas import OperatorRead, OperatorCreate, OperatorUpdate
+from core.exceptions import raise_conflict, raise_not_found
 from fastapi import HTTPException
 
 class OperatorService:
@@ -21,7 +22,7 @@ class OperatorService:
     def get_operator(self,operator_number :int ) -> OperatorRead :
         operator = self.db.query(Operator).filter(Operator.operator_number == operator_number).first()
         if not operator : 
-            raise HTTPException(status_code=404, detail = "Operator not found ")
+            raise_not_found("operator", operator_number)
         return operator
     
     def update_operator(self, operator_number : int, data: OperatorUpdate) -> OperatorRead : 

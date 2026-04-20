@@ -3,7 +3,7 @@ from sops.schemas import SopCreate, SopRead, SopUpdate
 from collection_items.models import CollectionItem
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-
+from core.exceptions import raise_conflict, raise_not_found
 
 class SopService:
     def __init__(self,db:Session):
@@ -16,9 +16,9 @@ class SopService:
                 for item in data.collection_items :
                     collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == item.item_name).first()
                     if collection_item is None :
-                        raise HTTPException(status_code = 404, detail = f"item {item.item_name} not found ")
+                        raise_not_found("item", item.item_name)
                     if item.required_quantity <= 0 :
-                         raise HTTPException(status_code=400 , detail= f" Invalid Request, Expected positive quantity  got {collection_item.quantity}")
+                        raise_conflict(f"Invalid Request, Expected positive quantity  got {collection_item.quantity}")
                     sop_collection_item = SopCollectionItem(
                         collection_item=collection_item,  
                         required_quantity=item.required_quantity  
@@ -36,7 +36,7 @@ class SopService:
     def get_sop(self,sop_name:str) -> SopRead :
         sop = self.db.query(Sop).filter(Sop.name == sop_name).first()
         if not sop:
-            raise HTTPException(status_code=404, detail=f"SOP '{sop_name}' not found")
+            raise_conflict("SOP",sop_name)
         return sop
     
     def update_sop(self, sop_name : str, data: SopUpdate) -> SopRead : 
@@ -52,7 +52,7 @@ class SopService:
                 for item in data.collection_items : 
                     collection_item = self.db.query(CollectionItem).filter(CollectionItem.name == item.item_name).first()
                     if collection_item is None :
-                        raise HTTPException(status_code=404, detail=f"item {item.item_name} not found ")
+                        raise_not_found("item",item.item_name)
                     sop.collection_items.append(
                         SopCollectionItem(
                             collection_item = collection_item,

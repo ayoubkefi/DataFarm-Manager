@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from robots.models import Robot
 from robots.schemas import RobotCreate, RobotRead, RobotUpdate
+from core.exceptions import raise_conflict, raise_not_found
 from fastapi import HTTPException
 
 from stations.models import Station
@@ -17,9 +18,9 @@ class RobotService:
         if data.station_name:
             station = self.db.query(Station).filter(Station.name == data.station_name).first()
             if not station : 
-                    raise HTTPException(status_code=404, detail="Station not found ")
+                raise_not_found("station",  data.station_name)
             if station.robot is not None :
-                 raise HTTPException(status_code=400, detail="Station assigned to another robot")
+                raise_conflict("Station already assigned to another robot ")
 
             robot.station = station         
         self.db.add(robot)
@@ -34,7 +35,7 @@ class RobotService:
     def get_robot(self, robot_name: str) -> RobotRead:
         robot = self.db.query(Robot).filter(Robot.name == robot_name).first()
         if not robot:
-            raise HTTPException(status_code=404, detail="Robot not found")
+            raise_not_found("robot", robot_name)
         return robot
     
     def update_robot(self,robot_name: str, data: RobotUpdate ) -> RobotRead :
@@ -48,9 +49,9 @@ class RobotService:
             else :
                 station = self.db.query(Station).filter(Station.name == data.station_name).first()
                 if not station : 
-                    raise HTTPException(status_code=404, detail="Station not found ")
+                    raise_not_found("station",  data.station_name)
                 if station.robot is not None and station.robot.name != robot_name : 
-                    raise HTTPException(status_code=400, detail ="Station already assigned to another robot ")
+                    raise_conflict("Station already assigned to another robot ")
                 robot.station = station
 
         self.db.commit()

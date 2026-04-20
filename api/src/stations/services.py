@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from stations.models import Station
 from stations.schemas import StationCreate, StationRead, StationUpdate
 from robots.models import Robot
-
+from core.exceptions import raise_not_found, raise_conflict
 
 class StationService :
     
@@ -18,9 +18,9 @@ class StationService :
         if data.robot_name :
             robot = self.db.query(Robot).filter(Robot.name == data.robot_name).first()
             if not robot : 
-                raise HTTPException(status_code = 404, detail = "robot not found ")
+                raise_not_found("robot", data.robot_name)
             if robot.station is not None :
-                raise HTTPException(status_code = 400, detail = "Robot assigned to another station")
+                raise_conflict("Robot assigned to another station")
             station.robot = robot  
         self.db.add(station)
         self.db.commit()
@@ -34,8 +34,7 @@ class StationService :
     def get_station(self,station_name : str) -> StationRead :
         station = self.db.query(Station).filter(Station.name == station_name).first()
         if not station:
-            raise HTTPException(status_code=404, detail=f"Station '{station_name}' not found")
-
+            raise_not_found("Station", station_name)
         return station 
     
     def update_station(self, station_name : str, data: StationUpdate) -> StationRead : 
@@ -47,11 +46,11 @@ class StationService :
             if data.robot_name is None :
                 station.robot = None 
             else :
-                robot = self.db.query(Station).filter(Station.name == data.station_name).first()
+                robot = self.db.query(Robot).filter(Robot.name == data.robot_name).first()
                 if not robot : 
-                    raise HTTPException(status_code=404, detail="Station not found ")
-                if robot.station is not None and robot.station.name != station_name: 
-                    raise HTTPException(status_code=400, detail ="Robot already assigned to another station ")
+                    raise_not_found("Robot", data.robot_name)
+                if robot.station is not None and robot.station.name != station_name:
+                    raise_conflict("Robot already assigned to another station") 
                 station.robot = robot
 
         self.db.commit()
