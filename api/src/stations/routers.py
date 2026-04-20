@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from db.session import get_db
-from stations.models import Station
 from stations.schemas import StationCreate, StationRead, StationUpdate
 from stations.services import StationService
 

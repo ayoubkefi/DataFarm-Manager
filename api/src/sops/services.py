@@ -1,7 +1,7 @@
 from sops.models import Sop, SopCollectionItem
 from sops.schemas import SopCreate, SopRead, SopUpdate
 from collection_items.models import CollectionItem
-from fastapi import HTTPException
+
 from sqlalchemy.orm import Session
 from core.exceptions import raise_conflict, raise_not_found
 
@@ -36,7 +36,7 @@ class SopService:
     def get_sop(self,sop_name:str) -> SopRead :
         sop = self.db.query(Sop).filter(Sop.name == sop_name).first()
         if not sop:
-            raise_conflict("SOP",sop_name)
+            raise_not_found("SOP",sop_name)
         return sop
     
     def update_sop(self, sop_name : str, data: SopUpdate) -> SopRead : 
@@ -46,7 +46,7 @@ class SopService:
             setattr(sop,field,value)
         if "collection_items" in data.model_fields_set : 
             if data.collection_items is None :
-                sop.collection_items = None
+                sop.collection_items.clear()
             else : 
                 sop.collection_items.clear()
                 for item in data.collection_items : 

@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from robots.models import Robot
 from robots.schemas import RobotCreate, RobotRead, RobotUpdate
 from core.exceptions import raise_conflict, raise_not_found
-from fastapi import HTTPException
+
 
 from stations.models import Station
 
