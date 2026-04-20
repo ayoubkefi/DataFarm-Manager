@@ -26,7 +26,7 @@ def get_sop(sop_name:str, db:  Session = Depends(get_db)):
 
 
 @router.patch("/{sop_name}", response_model = SopRead)
-def update_station(sop_name : str, data: SopUpdate, db: Session = Depends(get_db)):
+def update_sop(sop_name : str, data: SopUpdate, db: Session = Depends(get_db)):
     service =  SopService(db)
     return service.update_sop(sop_name,data)
 

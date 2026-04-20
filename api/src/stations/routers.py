@@ -33,6 +33,6 @@ def update_station(station_name : str, data: StationUpdate, db: Session = Depend
 
 
 @router.delete("/{station_name}", status_code=204)
-def delete_sation(station_name : str, db: Session = Depends(get_db)):
+def delete_station(station_name : str, db: Session = Depends(get_db)):
     service = StationService(db)
     return service.delete_station(station_name)

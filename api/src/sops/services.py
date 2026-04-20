@@ -29,7 +29,7 @@ class SopService:
         self.db.refresh(sop)
         return sop
     
-    def lists_sops(self) -> list[SopRead]:
+    def list_sops(self) -> list[SopRead]:
         sops = self.db.query(Sop).all()
         return sops 
     
