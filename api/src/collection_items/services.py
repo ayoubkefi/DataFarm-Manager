@@ -29,7 +29,7 @@ class CollectionItemService :
 
     def update_collection_item(self, collection_item_name : str, data: CollectionItemUpdate) -> CollectionItemRead : 
         update_data = data.model_dump(exclude_unset = True)
-        collectionItem = self.get_collectionItem(collection_item_name)
+        collectionItem = self.get_collection_item(collection_item_name)
         for field, value in update_data.items():
             setattr(collectionItem,field,value)
         self.db.commit()
@@ -38,6 +38,6 @@ class CollectionItemService :
     
 
     def delete_collection_item(self,item_name : str) -> None : 
-        collectionItem = self.get_collectionItem(item_name)
+        collectionItem = self.get_collection_item(item_name)
         self.db.delete(collectionItem)
         self.db.commit()
