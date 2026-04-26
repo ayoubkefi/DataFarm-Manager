@@ -1,32 +1,17 @@
+import { Table } from "../components/Table/Table";
 import { useOperators } from "../hooks/useOperator";
-
+import styles from './OperatorPage.module.css'
 export const OperatorPage = () => {
     const {operators, loading, error } = useOperators()
     if(loading) return <div> loading ... </div>
     if(error) return <div> error ...</div>
+    console.log(`Parsed operators : ${operators}`)
+    const rows = operators.map(op => [op.operator_number.toString(),op.full_name,op.email,op.is_active ? "Active":"Inactive"])
+    console.log(`Mapped Rows: ${rows}`)
     return(
-        <div>
-            <h1>Operators </h1>
-             <table>
-                <thead>
-                <tr>
-                    <th>Number</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Active</th>
-                </tr>
-                </thead>
-             </table>
-             <tbody>
-                {operators.map((op)=>(
-                    <tr key = {op.id}>
-                        <td>{op.operator_number}</td>
-                        <td>{op.full_name}</td>
-                        <td>{op.email}</td>
-                        <td>{op.is_active ? 'YES' : 'No'}</td>
-                    </tr>
-                ))}
-             </tbody>
+        <div className = {styles.container}>
+            <Table headers={['Number','Name','Email','Status']} rows = {rows}>
+            </Table>
         </div>
     )
 }  
