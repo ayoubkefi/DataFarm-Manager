@@ -1,0 +1,21 @@
+.table{
+
+    border: 1px  solid black;
+    background-color: white;
+    box-shadow: 0 1px 1px black;
+    border-collapse: separate;
+    opacity: 0.8;
+}
+
+.table thead th{
+    background-color: #353949;
+    border-bottom: 2px solid black;
+    color : white;
+    
+}
+.table th,
+.table td {
+  padding: 12px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
