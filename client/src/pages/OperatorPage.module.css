@@ -1,11 +1,26 @@
 .container {
-  padding: 100px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
 }
 
-.title {
-  color: #1F4E79;
-  margin-bottom: 24px;
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
 }
 
+.createButton {
+  background: none;
+  border: none;
+  color: #353949;
+  font-size: 28px;
+  font-weight: 300;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.createButton:hover {
+  color: #444a60;
+}

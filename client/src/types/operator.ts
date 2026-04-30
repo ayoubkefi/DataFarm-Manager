@@ -8,15 +8,15 @@ export interface Operator{
     updated_at : string
 }
 export interface OperatorCreate{
-    fullname : string 
+    full_name : string 
     email : string 
     operator_number : number
     is_active : boolean
 }
 export interface OperatorUpdate{
-    fullname?: string 
+    full_name?: string 
     email?: string 
-    opeartor_number?: string
+    opeartor_number?: number
     is_active?: boolean
 
 }
