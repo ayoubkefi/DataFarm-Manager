@@ -8,19 +8,21 @@ interface Field{
 interface ModalProps{
     title : string 
     fields : Field[]
+    initialValues?: Record<string,string>  
     onClose : () => void 
-    onSubmit : (data : Record<string,string>) => void
+    onSubmit : (data : Record<string,string>) => Promise<void>
+
 }
 
-export const Modal = ({title, fields, onClose, onSubmit}: ModalProps) => {
+export const Modal = ({title, fields,initialValues, onClose, onSubmit}: ModalProps) => {
     
     const [form, setForm] = useState<Record<string,string>>(
-        Object.fromEntries(fields.map(f => [f.key,'']))
+        initialValues?? 
+        Object.fromEntries(fields.map(f => [f.key,f.type === 'boolean' ? 'true' :'']))
     )
 
-    const handleSubmit = () =>{
-        onSubmit(form)
-        onClose()
+    const handleSubmit = async () =>{
+        await onSubmit(form)
     }
     return (
     <>
@@ -59,7 +61,7 @@ export const Modal = ({title, fields, onClose, onSubmit}: ModalProps) => {
         </div>
         <div className={styles.actions}>
           <button className={styles.cancelButton} onClick={onClose}>Cancel</button>
-          <button className={styles.submitButton} onClick={handleSubmit}>Create</button>
+          <button className={styles.submitButton} onClick={handleSubmit}>{initialValues  ? 'Save ' :  'Create'}</button>
         </div>
       </div>
     </>
