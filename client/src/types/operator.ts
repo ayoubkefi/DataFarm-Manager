@@ -16,7 +16,7 @@ export interface OperatorCreate{
 export interface OperatorUpdate{
     full_name?: string 
     email?: string 
-    opeartor_number?: number
+    operator_number?: number
     is_active?: boolean
 
 }
