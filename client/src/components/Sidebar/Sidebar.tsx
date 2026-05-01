@@ -2,10 +2,12 @@ import { NavLink } from 'react-router-dom'
 import styles from './Sidebar.module.css'
 
 const links = [
-  { to: '/operators', label: 'Operators', icon: '🧑‍💻' },
-  { to: '/robots', label: 'Robots', icon: '🤖' },
-  { to: '/stations', label: 'Stations', icon: '🏭' },
-  { to: '/collection-items', label: 'Collection Items', icon: '📦' },
+  { to: '/operators', label: 'Operators', image : './icons/Operators-sidebar.svg' },
+  { to: '/robots', label: 'Robots', image : './icons/Robots-sidebar.svg' },
+  { to: '/stations', label: 'Stations', image : './icons/Stations-sidebar.svg' },
+  { to: '/Sops', label : 'Sops', image : './icons/Sops-sidebar.svg'},
+  { to: '/collection-items', label: 'Collection Items', image : './icons/CollectionItems-sidebar.svg' },
+  
 ]
 
 export const Sidebar = () => {
@@ -23,7 +25,7 @@ export const Sidebar = () => {
                 : styles.link
             }
           >
-            <span>{link.icon}</span>
+            <span><img src={link.image} alt={link.label} width={18} height={18}/></span>
             <span>{link.label}</span>
           </NavLink>
         ))}
