@@ -1,21 +1,64 @@
-.table{
-
-    border: 1px  solid black;
-    background-color: white;
-    box-shadow: 0 1px 1px black;
-    border-collapse: separate;
-    opacity: 0.8;
+.table {
+  border: 1px solid black;
+  background-color: white;
+  box-shadow: 0 1px 1px black;
+  border-collapse: separate;
+  opacity: 0.8;
+  width: 100%;
 }
 
-.table thead th{
-    background-color: #353949;
-    border-bottom: 2px solid black;
-    color : white;
-    
+.table thead th {
+  background-color: var(--base-5);
+  border-bottom: 2px solid black;
+  color: white;
 }
+
 .table th,
 .table td {
   padding: 12px 10px;
   text-align: left;
   vertical-align: middle;
+  background-color: var(--base-9);
+}
+
+.actionsCell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.editButton {
+  border: 1px solid var(--base-3);
+  color: var(--base-3);
+  background-color: var(--shade-3);
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.2px;
+}
+
+.editButton:hover {
+  background-color: var(--base-3);
+  color: var(--base-2);
+}
+
+.deleteButton {
+  border: 1px solid var(--extra-5);
+  color: var(--extra-5);
+  background-color: var(--extra-6);
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.2px;
+}
+
+.deleteButton:hover {
+  background-color: var(--extra-5);
+  color: var(--base-2);
 }
