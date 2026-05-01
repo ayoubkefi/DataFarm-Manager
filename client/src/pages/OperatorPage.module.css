@@ -11,16 +11,23 @@
 }
 
 .createButton {
-  background: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--base-3);
   border: none;
-  color: #353949;
-  font-size: 28px;
-  font-weight: 300;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 8px rgba(105, 152, 198, 0.4);
+  color: white;
+  font-size: 24px;
+  font-weight: 300;
   line-height: 1;
-  transition: color 0.2s ease;
 }
 
 .createButton:hover {
-  color: #444a60;
+  background-color: var(--shade-1);
 }
