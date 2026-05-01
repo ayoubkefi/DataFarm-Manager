@@ -9,6 +9,12 @@ class OperatorService:
     def __init__(self,db:Session):
         self.db = db
     def create_operator(self, data:  OperatorCreate) ->  OperatorRead :
+        existing = self.db.query(Operator).filter(Operator.operator_number == data.operator_number).first()
+        if existing :  
+            raise_conflict(f"Operator number {data.operator_number} already exists ")
+        existing_email  = self.db.query(Operator).filter(Operator.email  == data.email).first()
+        if existing_email :
+            raise_conflict(f"Email {data.email} already exits")
         operator = Operator(**data.model_dump())
         self.db.add(operator)
         self.db.commit()
